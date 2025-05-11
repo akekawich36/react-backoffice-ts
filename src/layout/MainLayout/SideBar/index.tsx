@@ -8,7 +8,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 
 // project imports
 // import MenuCard from "./MenuCard";
-// import MenuList from "./MenuList";
+import MenuList from "./MenuList";
 // import LogoSection from "../LogoSection";
 import MiniDrawerStyled from "./MiniDrawerStyled";
 
@@ -57,13 +57,13 @@ function Sidebar() {
       <>
         {downMD ? (
           <Box sx={drawerSX}>
-            {/* <MenuList /> */}
+            <MenuList />
           </Box>
         ) : (
           <PerfectScrollbar
             style={{ height: "calc(100vh - 88px)", ...drawerSX }}
           >
-            {/* <MenuList /> */}
+            <MenuList />
           </PerfectScrollbar>
         )}
       </>

@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 // import LogoSection from '../LogoSection';
 // import SearchSection from './SearchSection';
 // import ProfileSection from './ProfileSection';
-import NotificationSection from './NotificationSection';
+// import NotificationSection from './NotificationSection';
 
 // import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
 
@@ -63,7 +63,7 @@ export default function Header() {
       <Box sx={{ flexGrow: 1 }} />
 
       {/* notification */}
-      <NotificationSection />
+      {/* <NotificationSection /> */}
 
       {/* profile */}
       {/* <ProfileSection /> */}

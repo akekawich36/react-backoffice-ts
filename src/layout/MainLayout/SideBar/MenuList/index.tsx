@@ -5,60 +5,54 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 // project imports
-import NavItem from "./NavItem";
-import NavGroup from "./NavGroup";
+import NavItem from "../NavItem";
+import NavGroup from "../NavGroup";
 import menuItems from "@/menu-items";
 
-// Types
-interface NavChildItem {
-  id: string;
-  title: string;
-  type: "item";
-  url: string;
-  icon: React.ElementType;
-  breadcrumbs?: boolean;
-}
-
-interface NavGroupItem {
-  id: string;
-  title: string;
-  type: "group";
-  children: NavChildItem[];
-  icon?: React.ElementType;
-  url?: string;
-}
-
-interface MenuItems {
-  items: NavGroupItem[];
-}
+import {
+  MenuItemsType,
+  MenuItemType,
+  RemItem,
+  NavChildItem,
+  NavCollapseItem,
+} from "@/types/SideBar";
 
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
 function MenuList() {
   const [selectedID, setSelectedID] = useState<string>("");
 
-  const lastItem = null;
+  const lastItem: number | null = null;
+  const typedMenuItems = menuItems as unknown as MenuItemsType;
 
-  let lastItemIndex = menuItems.items.length - 1;
-  let remItems: any[] = [];
+  let lastItemIndex = typedMenuItems.items.length - 1;
+  let remItems: RemItem[] = [];
   let lastItemId: string | undefined;
 
-  if (lastItem && lastItem < menuItems.items.length) {
-    lastItemId = menuItems.items[lastItem - 1].id;
+  if (lastItem !== null && lastItem < typedMenuItems.items.length) {
+    lastItemId = typedMenuItems.items[lastItem - 1].id;
     lastItemIndex = lastItem - 1;
-    remItems = menuItems.items
-      .slice(lastItem - 1, menuItems.items.length)
-      .map((item) => ({
-        title: item.title,
-        elements: item.children,
-        icon: item.icon,
-        ...(item.url && {
-          url: item.url,
-        }),
-      }));
+
+    remItems = typedMenuItems.items
+      .slice(lastItem - 1, typedMenuItems.items.length)
+      .map((item: MenuItemType) => {
+        const typedElements = item.children as unknown as (
+          | NavChildItem
+          | NavCollapseItem
+        )[];
+
+        return {
+          title: item.title,
+          elements: typedElements,
+          icon: item.icon,
+          ...(item.url && {
+            url: item.url,
+          }),
+        };
+      });
   }
 
-  const navItems = menuItems.items
+  const navItems = typedMenuItems.items
     .slice(0, lastItemIndex + 1)
     .map((item, index) => {
       switch (item.type) {
@@ -97,7 +91,19 @@ function MenuList() {
       }
     });
 
-  return <Box sx={{ mt: 1.5 }}>{navItems}</Box>;
+  return (
+    <Box
+      sx={{
+        mt: 1.5,
+        "& .MuiList-root": {
+          p: 0,
+          mb: 1,
+        },
+      }}
+    >
+      {navItems}
+    </Box>
+  );
 }
 
 export default memo(MenuList);

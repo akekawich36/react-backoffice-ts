@@ -4,7 +4,6 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 const pages = {
   id: "pages",
   title: "Pages",
-  caption: "Pages Caption",
   type: "group",
   children: [
     {
