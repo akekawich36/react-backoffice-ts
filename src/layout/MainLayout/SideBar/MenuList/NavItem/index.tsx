@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
 // material-ui
-// import { useTheme } from "@mui/material/styles";
-// import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 // import Avatar from "@mui/material/Avatar";
 import ButtonBase from "@mui/material/ButtonBase";
 // import Chip from "@mui/material/Chip";
@@ -13,16 +13,17 @@ import ListItemText from "@mui/material/ListItemText";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
-// project imports
-// import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
-// import useConfig from 'hooks/useConfig';
-
 // assets
 import { SvgIconComponent } from "@mui/icons-material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 // Types
 import { ChipProps } from "@/types/SideBar";
+
+// redux
+import { IRootState } from "@/types/Store";
+import { useSelector, useDispatch } from "react-redux";
+import { handleCloseDrawer } from "@/store/reducer/drawer";
 
 function isMuiIcon(icon: React.ElementType): icon is SvgIconComponent {
   return (
@@ -33,7 +34,6 @@ function isMuiIcon(icon: React.ElementType): icon is SvgIconComponent {
 }
 
 const borderRadius = 12;
-const drawerOpen = true;
 
 interface NavItemProps {
   item: {
@@ -60,15 +60,14 @@ export default function NavItem({
   isParents = false,
   setSelectedID,
 }: NavItemProps) {
-  // const theme = useTheme();
-  // const downMD = useMediaQuery(theme.breakpoints.down('md'));
+  const dispatch = useDispatch();
+  const theme = useTheme();
+  const downMD = useMediaQuery(theme.breakpoints.down("md"));
   const ref = useRef<HTMLElement | null>(null);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  // const { borderRadius } = useConfig();
 
-  // const { menuMaster } = useGetMenuMaster();
-  // const drawerOpen = menuMaster.isDashboardDrawerOpened;
+  const drawerOpen = useSelector((state: IRootState) => state.drawer.isOpen);
   const isSelected = React.useMemo(() => {
     try {
       const itemPath = item?.link || item?.url;
@@ -77,7 +76,6 @@ export default function NavItem({
         return false;
       }
 
-      // Now safely use matchPath
       return !!matchPath({ path: itemPath, end: false }, pathname);
     } catch (error) {
       console.error("Error in matchPath:", error);
@@ -122,11 +120,10 @@ export default function NavItem({
   }
 
   const itemHandler = () => {
-    // if (downMD) handlerDrawerOpen(false);
-
+    if (downMD) dispatch(handleCloseDrawer());
+    if (item.url) navigate(item.url);
     if (isParents && setSelectedID) {
       setSelectedID();
-      if (item.url) navigate(item.url);
     }
   };
 
@@ -140,8 +137,10 @@ export default function NavItem({
         sx={{
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
+          minHeight: "46px",
+          overflow: "hidden",
           ...(drawerOpen && level !== 1 && { ml: `${level * 18}px` }),
-          ...(!drawerOpen ? { pl: 1.25 } : {}),
+          ...(!drawerOpen ? { pl: 0 } : {}),
           ...(drawerOpen &&
             level === 1 && {
               "&:hover": {
@@ -184,8 +183,8 @@ export default function NavItem({
               ...(!drawerOpen && level === 1
                 ? {
                     borderRadius: `${borderRadius}px`,
-                    width: 46,
-                    height: 46,
+                    width: 48,
+                    height: 48,
                     alignItems: "center",
                     justifyContent: "center",
                     "&:hover": {
@@ -205,40 +204,39 @@ export default function NavItem({
           </ListItemIcon>
         </ButtonBase>
 
-        {(drawerOpen || (!drawerOpen && level !== 1)) && (
-          <Tooltip title={item.title} disableHoverListener={!hoverStatus}>
-            <ListItemText
-              primary={
+        {(drawerOpen || (!drawerOpen && level !== 1)) && <></>}
+        <Tooltip title={item.title} disableHoverListener={!hoverStatus}>
+          <ListItemText
+            primary={
+              <Typography
+                ref={ref}
+                noWrap
+                variant="body2"
+                color="inherit"
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  width: 160,
+                }}
+              >
+                {item.title}
+              </Typography>
+            }
+            secondary={
+              item.caption && (
                 <Typography
-                  ref={ref}
-                  noWrap
-                  variant={isSelected ? "h5" : "body1"}
-                  color="inherit"
+                  variant="caption"
+                  gutterBottom
                   sx={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    width: 102,
+                    display: "block",
                   }}
                 >
-                  {item.title}
+                  {item.caption}
                 </Typography>
-              }
-              secondary={
-                item.caption && (
-                  <Typography
-                    variant="caption"
-                    gutterBottom
-                    sx={{
-                      display: "block",
-                    }}
-                  >
-                    {item.caption}
-                  </Typography>
-                )
-              }
-            />
-          </Tooltip>
-        )}
+              )
+            }
+          />
+        </Tooltip>
       </ListItemButton>
     </>
   );

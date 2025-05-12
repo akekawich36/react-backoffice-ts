@@ -9,7 +9,7 @@ const utilities = {
       id: "util-typography",
       title: "Table",
       type: "item",
-      url: "/table",
+      url: "",
       icon: BackupTableIcon,
       breadcrumbs: false,
     },

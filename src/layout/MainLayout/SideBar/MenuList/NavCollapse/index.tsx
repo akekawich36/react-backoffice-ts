@@ -17,11 +17,12 @@ import Box from "@mui/material/Box";
 // project imports
 import NavItem from "../NavItem";
 import Transitions from "@/components/Transitions";
-// import useConfig from "hooks/useConfig";
-// import { useGetMenuMaster } from "api/menu";
+
+// redux
+import { useSelector } from "react-redux";
+import { IRootState } from "@/types/Store";
 
 // third party
-const drawerOpen = true;
 const borderRadius = 12;
 
 // assets
@@ -51,12 +52,9 @@ export default function NavCollapse({
   level,
   parentId,
 }: NavCollapseProps) {
+  const drawerOpen = useSelector((state: IRootState) => state.drawer.isOpen);
   const theme = useTheme();
   const ref = useRef<HTMLElement | null>(null);
-
-  // const { borderRadius } = useConfig();
-  // const { menuMaster } = useGetMenuMaster();
-  // const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
   const [open, setOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<string | null>(null);
@@ -192,9 +190,9 @@ export default function NavCollapse({
   }
 
   const collapseIcon = drawerOpen ? (
-    <KeyboardArrowUpIcon />
+    <KeyboardArrowUpIcon sx={{ display: drawerOpen ? "block" : "none" }} />
   ) : (
-    <KeyboardArrowDownIcon />
+    <KeyboardArrowDownIcon sx={{ display: drawerOpen ? "block" : "none" }} />
   );
 
   const iconSelectedColor = "secondary.main";
@@ -206,8 +204,9 @@ export default function NavCollapse({
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
           mb: 0.5,
+          minHeight: "46px",
           ...(drawerOpen && level !== 1 && { ml: `${level * 18}px` }),
-          ...(!drawerOpen ? { pl: 1.25 } : {}),
+          ...(!drawerOpen ? { pl: 0 } : {}),
           ...(drawerOpen &&
             level === 1 && {
               "&:hover": { bgcolor: "secondary.light" },
@@ -246,8 +245,8 @@ export default function NavCollapse({
               ...(!drawerOpen && level === 1
                 ? {
                     borderRadius: `${borderRadius}px`,
-                    width: 46,
-                    height: 46,
+                    width: 48,
+                    height: 48,
                     alignItems: "center",
                     justifyContent: "center",
                     "&:hover": {
@@ -266,42 +265,47 @@ export default function NavCollapse({
             {menuIcon}
           </ListItemIcon>
         )}
-        {(drawerOpen || (!drawerOpen && level !== 1)) && (
-          <Tooltip title={menu.title} disableHoverListener={!hoverStatus}>
-            <ListItemText
-              primary={
+        {(drawerOpen || (!drawerOpen && level !== 1)) && <></>}
+        <Tooltip title={menu.title} disableHoverListener={!hoverStatus}>
+          <ListItemText
+            primary={
+              <Typography
+                ref={ref}
+                noWrap
+                variant="body2"
+                color="inherit"
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  width: 120,
+                }}
+              >
+                {menu.title}
+              </Typography>
+            }
+            secondary={
+              menu.caption && (
                 <Typography
-                  ref={ref}
-                  noWrap
-                  variant="body1"
-                  color="inherit"
+                  variant="caption"
+                  gutterBottom
                   sx={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    width: 120,
+                    display: "block",
                   }}
                 >
-                  {menu.title}
+                  {menu.caption}
                 </Typography>
-              }
-              secondary={
-                menu.caption && (
-                  <Typography
-                    variant="caption"
-                    gutterBottom
-                    sx={{
-                      display: "block",
-                    }}
-                  >
-                    {menu.caption}
-                  </Typography>
-                )
-              }
-            />
-          </Tooltip>
-        )}
+              )
+            }
+          />
+        </Tooltip>
 
-        {openMini || open ? collapseIcon : <KeyboardArrowDownIcon />}
+        {openMini || open ? (
+          collapseIcon
+        ) : (
+          <KeyboardArrowDownIcon
+            sx={{ display: drawerOpen ? "block" : "none" }}
+          />
+        )}
 
         {!drawerOpen && (
           <Popper
@@ -320,15 +324,15 @@ export default function NavCollapse({
               overflow: "visible",
               zIndex: 2001,
               minWidth: 180,
-              "&:before": {
-                content: '""',
-                bgcolor: "background.paper",
-                transform: "translateY(-50%) rotate(45deg)",
-                zIndex: 120,
-                borderLeft: `1px solid`,
-                borderBottom: `1px solid`,
-                borderColor: "divider",
-              },
+              // "&:before": {
+              //   content: '""',
+              //   bgcolor: "background.paper",
+              //   transform: "translateY(-50%) rotate(45deg)",
+              //   zIndex: 120,
+              //   borderLeft: `1px solid`,
+              //   borderBottom: `1px solid`,
+              //   borderColor: "divider",
+              // },
             }}
           >
             {({ TransitionProps }) => (
@@ -339,6 +343,9 @@ export default function NavCollapse({
                     mt: 1.5,
                     boxShadow: theme.shadows[8],
                     backgroundImage: "none",
+                    borderRadius: "12px",
+                    px: 2,
+                    py: 1,
                   }}
                 >
                   <ClickAwayListener onClickAway={handleClosePopper}>
@@ -357,8 +364,10 @@ export default function NavCollapse({
             sx={{
               position: "relative",
               "& .MuiListItemButton-root": {
-                marginLeft: "30px",
+                marginLeft: "0",
+                paddingLeft: "46px",
                 gap: "16px",
+                "&:hover": { bgcolor: "secondary.light" },
               },
               // "&:after": {
               //   content: "''",

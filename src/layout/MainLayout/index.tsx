@@ -9,9 +9,14 @@ import MainContentStyled from "./MainContentStyle";
 import Header from "./Header";
 import Sidebar from "./SideBar";
 
+// redux
+import { useSelector } from "react-redux";
+import { IRootState } from "@/types/Store";
+
 type MainLayoutProps = {};
 
 const MainLayout: React.FC<MainLayoutProps> = () => {
+  const drawerOpen = useSelector((state: IRootState) => state.drawer.isOpen);
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -29,7 +34,7 @@ const MainLayout: React.FC<MainLayoutProps> = () => {
 
         <Sidebar />
 
-        <MainContentStyled {...{ borderRadius: 12, open: true }}>
+        <MainContentStyled {...{ borderRadius: 12, open: drawerOpen }}>
           <Box
             sx={{
               ...{ px: { xs: 0 } },

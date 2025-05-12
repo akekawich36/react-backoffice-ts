@@ -2,6 +2,7 @@ import MainLayout from "@/layout/MainLayout";
 import AuthGuard from "@/utils/AuthGuard";
 
 import MainPage from "@/pages";
+import FormPage from "@/pages/form";
 
 const MainRoutes = {
   path: "/",
@@ -14,6 +15,10 @@ const MainRoutes = {
     {
       path: "",
       element: <MainPage />,
+    },
+    {
+      path: "/form",
+      element: <FormPage />,
     },
   ],
 };

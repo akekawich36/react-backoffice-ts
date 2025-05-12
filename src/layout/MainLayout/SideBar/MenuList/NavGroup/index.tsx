@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { matchPath, useLocation } from "react-router-dom";
 
 // material-ui
-// import { useTheme } from '@mui/material/styles';
-// import Divider from '@mui/material/Divider';
 import List from "@mui/material/List";
 
 import Typography from "@mui/material/Typography";
@@ -15,7 +13,9 @@ import NavItem from "../NavItem";
 // Types
 import { NavChildItem, NavGroupItem, RemItem } from "@/types/SideBar";
 
-const drawerOpen = true;
+// redux
+import { useSelector } from "react-redux";
+import { IRootState } from "@/types/Store";
 
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
@@ -35,11 +35,8 @@ export default function NavGroup({
   lastItemId,
   setSelectedID,
 }: NavGroupProps) {
-  // const theme = useTheme();
   const { pathname } = useLocation();
-
-  // const { menuMaster } = useGetMenuMaster();
-  // const drawerOpen = menuMaster.isDashboardDrawerOpened;
+  const drawerOpen = useSelector((state: IRootState) => state.drawer.isOpen);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [currentItem, setCurrentItem] = useState<NavGroupItem>(item);
@@ -50,9 +47,9 @@ export default function NavGroup({
     if (lastItem) {
       if (item.id === lastItemId) {
         const localItem = { ...item };
-        const elements = remItems.map((ele) => ele.elements);
-        const flattenedElements = elements.flat(1);
-        localItem.children = flattenedElements as (NavChildItem)[];
+        const elements = remItems?.map((ele) => ele.elements);
+        const flattenedElements = elements?.flat(1);
+        localItem.children = flattenedElements as NavChildItem[];
         setCurrentItem(localItem);
       } else {
         setCurrentItem(item);

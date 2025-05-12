@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 // project imports
-import NavItem from "../NavItem";
-import NavGroup from "../NavGroup";
+import NavItem from "./NavItem";
+import NavGroup from "./NavGroup";
 import menuItems from "@/menu-items";
 
 import {
@@ -94,6 +94,7 @@ function MenuList() {
   return (
     <Box
       sx={{
+        overflow: "hidden",
         mt: 1.5,
         "& .MuiList-root": {
           p: 0,

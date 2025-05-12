@@ -9,7 +9,7 @@ const dashboard = {
       id: "default",
       title: "Paper and Shadow",
       type: "item",
-      url: "/card",
+      url: "",
       icon: DashboardIcon,
       breadcrumbs: false,
     },

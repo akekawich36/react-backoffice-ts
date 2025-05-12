@@ -10,14 +10,17 @@ import Box from "@mui/material/Box";
 // import ProfileSection from './ProfileSection';
 // import NotificationSection from './NotificationSection';
 
-// import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
-
 // assets
 import MenuIcon from "@mui/icons-material/Menu";
+
+// redux
+import { useDispatch } from "react-redux";
+import { handleToggleDrawer } from "@/store/reducer/drawer";
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
 export default function Header() {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const downMD = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -37,8 +40,7 @@ export default function Header() {
         <Avatar
           variant="rounded"
           sx={{
-            // ...theme.typography.commonAvatar,
-            // ...theme.typography.mediumAvatar,
+            cursor: "pointer",
             overflow: "hidden",
             transition: "all .2s ease-in-out",
             bgcolor: "secondary.light",
@@ -49,7 +51,7 @@ export default function Header() {
             },
           }}
           onClick={() => {
-            console.log("open");
+            dispatch(handleToggleDrawer());
           }}
           color="inherit"
         >

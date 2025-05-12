@@ -27,22 +27,26 @@ const MainContentStyled = styled("main", {
   borderRadius: `${borderRadius}px`,
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
+  transition: theme.transitions.create(
+    "margin",
+    open
+      ? {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen + 200,
+        }
+      : {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen + 200,
+        }
+  ),
   ...(!open && {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.shorter + 200,
-    }),
     [theme.breakpoints.up("md")]: {
-      marginLeft: -(drawerWidth - 72),
+      marginLeft: -(drawerWidth - 80),
       width: `calc(100% - ${drawerWidth}px)`,
       marginTop: 88,
     },
   }),
   ...(open && {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.shorter + 200,
-    }),
     marginLeft: 0,
     marginTop: 88,
     width: `calc(100% - ${drawerWidth}px)`,

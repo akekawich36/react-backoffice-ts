@@ -7,28 +7,23 @@ import { Drawer, Box } from "@mui/material";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 // project imports
-// import MenuCard from "./MenuCard";
 import MenuList from "./MenuList";
 // import LogoSection from "../LogoSection";
 import MiniDrawerStyled from "./MiniDrawerStyled";
 
-// import useConfig from "hooks/useConfig";
-// import { drawerWidth } from "store/constant";
-
-// import { handlerDrawerOpen, useGetMenuMaster } from "api/menu";
+// redux
+import { useSelector, useDispatch } from "react-redux";
+import { IRootState } from "@/types/Store";
+import { handleToggleDrawer } from "@/store/reducer/drawer";
 
 const drawerWidth = 260;
-const drawerOpen = true;
 
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
 function Sidebar() {
+  const dispatch = useDispatch();
+  const drawerOpen = useSelector((state: IRootState) => state.drawer.isOpen);
   const downMD = useMediaQuery((theme) => theme.breakpoints.down("md"));
-
-  //   const { menuMaster } = useGetMenuMaster();
-  //   const drawerOpen = menuMaster.isDashboardDrawerOpened;
-
-  //   const { miniDrawer, mode } = useConfig();
 
   const logo = useMemo(
     () => (
@@ -42,16 +37,16 @@ function Sidebar() {
 
   const drawer = useMemo(() => {
     let drawerSX = {
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      marginTop: "20px",
+      paddingLeft: "16px",
+      paddingRight: "16px",
+      marginTop: "0px",
     };
-    if (drawerOpen)
-      drawerSX = {
-        paddingLeft: "16px",
-        paddingRight: "16px",
-        marginTop: "0px",
-      };
+    // if (drawerOpen)
+    //   drawerSX = {
+    //     paddingLeft: "16px",
+    //     paddingRight: "16px",
+    //     marginTop: "0px",
+    //   };
 
     return (
       <>
@@ -75,34 +70,37 @@ function Sidebar() {
     <Box
       component="nav"
       sx={{ flexShrink: { md: 0 }, width: { xs: "auto", md: 260 } }}
-      aria-label="mailbox folders"
     >
-      {downMD || (true && drawerOpen) ? (
-        <Drawer
-          variant={downMD ? "temporary" : "persistent"}
-          anchor="left"
-          open={drawerOpen}
-          onClose={() => {}}
-          sx={{
-            "& .MuiDrawer-paper": {
-              mt: downMD ? 0 : 11,
-              zIndex: 1099,
-              width: drawerWidth,
-              bgcolor: "background.default",
-              color: "text.primary",
-              borderRight: "none",
-            },
-          }}
-          ModalProps={{ keepMounted: true }}
-          color="inherit"
-        >
-          {downMD && logo}
-          {drawer}
-        </Drawer>
+      {downMD || (undefined && drawerOpen) ? (
+        <>
+          <Drawer
+            variant={downMD ? "temporary" : "persistent"}
+            anchor="left"
+            open={drawerOpen}
+            onClose={() => dispatch(handleToggleDrawer())}
+            sx={{
+              "& .MuiDrawer-paper": {
+                mt: downMD ? 0 : 11,
+                zIndex: 1099,
+                width: drawerWidth,
+                bgcolor: "background.default",
+                color: "text.primary",
+                borderRight: "none",
+              },
+            }}
+            ModalProps={{ keepMounted: true }}
+            color="inherit"
+          >
+            {downMD && logo}
+            {drawer}
+          </Drawer>
+        </>
       ) : (
-        <MiniDrawerStyled open={drawerOpen}>
-          <Box sx={{ mt: 10 }}>{drawer}</Box>
-        </MiniDrawerStyled>
+        <>
+          <MiniDrawerStyled variant="permanent" open={drawerOpen}>
+            <Box sx={{ mt: 10 }}>{drawer}</Box>
+          </MiniDrawerStyled>
+        </>
       )}
     </Box>
   );

@@ -31,17 +31,17 @@ interface BaseNavigationItem {
 
 // Item Type
 export interface NavChildItem extends BaseNavigationItem {
-  type: "item";
-  url: string;
+  type: string;
+  url?: string;
   breadcrumbs?: boolean;
   children?: NavChildItem[];
 }
 
 // Collapse Type
 export interface NavCollapseItem extends BaseNavigationItem {
-  type: "collapse";
+  type: string;
   url?: string;
-  children: (NavChildItem | NavCollapseItem)[];
+  children?: (NavChildItem | NavCollapseItem)[];
 }
 
 // Group Type
@@ -63,8 +63,6 @@ export interface RemItem {
   icon?: React.ElementType;
   url?: string;
 }
-
-// For Transitions component
 export interface TransitionsProps {
   children: ReactElement;
   type?: "grow" | "fade" | "collapse" | "slide" | "zoom";
@@ -79,7 +77,6 @@ export interface TransitionsProps {
   in: boolean;
 }
 
-// This type matches the actual structure in menuItems for better type assertion compatibility
 export type MenuItemType = {
   id: string;
   title: string;
@@ -98,7 +95,6 @@ export type MenuItemType = {
   }>;
 };
 
-// Type for the complete menu items structure
 export type MenuItemsType = {
   items: MenuItemType[];
 };
