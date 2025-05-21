@@ -206,7 +206,7 @@ export default function NavCollapse({
           mb: 0.5,
           minHeight: "46px",
           ...(drawerOpen && level !== 1 && { ml: `${level * 18}px` }),
-          ...(!drawerOpen ? { pl: 0 } : {}),
+          ...(!drawerOpen ? { px: 1.5, py: 0 } : { px: 1.5 }),
           ...(drawerOpen &&
             level === 1 && {
               "&:hover": { bgcolor: "secondary.light" },
@@ -240,13 +240,12 @@ export default function NavCollapse({
         {menuIcon && (
           <ListItemIcon
             sx={{
-              minWidth: level === 1 ? 36 : 18,
+              minWidth: 0,
+              mr: 1.5,
               color: isSelected ? iconSelectedColor : "text.primary",
               ...(!drawerOpen && level === 1
                 ? {
                     borderRadius: `${borderRadius}px`,
-                    width: 48,
-                    height: 48,
                     alignItems: "center",
                     justifyContent: "center",
                     "&:hover": {

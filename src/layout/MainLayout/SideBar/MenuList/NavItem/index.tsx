@@ -137,36 +137,47 @@ export default function NavItem({
         sx={{
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
-          minHeight: "46px",
+          minHeight: "48px",
           overflow: "hidden",
-          ...(drawerOpen && level !== 1 && { ml: `${level * 18}px` }),
-          ...(!drawerOpen ? { pl: 0 } : {}),
-          ...(drawerOpen &&
-            level === 1 && {
-              "&:hover": {
-                bgcolor: "secondary.light",
-              },
-              "&.Mui-selected": {
-                bgcolor: "secondary.light",
-                color: iconSelectedColor,
-                "&:hover": {
-                  color: iconSelectedColor,
-                  bgcolor: "secondary.light",
-                },
-              },
-            }),
-          ...((!drawerOpen || level !== 1) && {
-            py: level === 1 ? 0 : 1,
+          "&:hover": {
+            bgcolor: "secondary.light",
+          },
+          "&.Mui-selected": {
+            bgcolor: "secondary.light",
+            color: iconSelectedColor,
             "&:hover": {
-              bgcolor: "transparent",
+              color: iconSelectedColor,
+              bgcolor: "secondary.light",
             },
-            "&.Mui-selected": {
-              "&:hover": {
-                bgcolor: "transparent",
-              },
-              bgcolor: "transparent",
-            },
-          }),
+          },
+          ...(drawerOpen && level !== 1 && { ml: `${level * 18}px` }),
+          ...(!drawerOpen ? { px: 1.5, py: 0 } : { px: 1.5 }),
+          // ...(drawerOpen &&
+          //   level === 1 && {
+          //     "&:hover": {
+          //       bgcolor: "secondary.light",
+          //     },
+          //     "&.Mui-selected": {
+          //       bgcolor: "secondary.light",
+          //       color: iconSelectedColor,
+          //       "&:hover": {
+          //         color: iconSelectedColor,
+          //         bgcolor: "secondary.light",
+          //       },
+          //     },
+          //   }),
+          // ...((!drawerOpen || level !== 1) && {
+          //   py: level === 1 ? 0 : 1,
+          //   "&:hover": {
+          //     bgcolor: "transparent",
+          //   },
+          //   "&.Mui-selected": {
+          //     "&:hover": {
+          //       bgcolor: "transparent",
+          //     },
+          //     bgcolor: "transparent",
+          //   },
+          // }),
         }}
         selected={isSelected}
         onClick={() => itemHandler()}
@@ -178,13 +189,13 @@ export default function NavItem({
         >
           <ListItemIcon
             sx={{
-              minWidth: level === 1 ? 36 : 18,
+              minWidth: 0,
+              mr: 1.5,
+              // minWidth: level === 1 ? 36 : 18,
               color: isSelected ? iconSelectedColor : "text.primary",
               ...(!drawerOpen && level === 1
                 ? {
                     borderRadius: `${borderRadius}px`,
-                    width: 48,
-                    height: 48,
                     alignItems: "center",
                     justifyContent: "center",
                     "&:hover": {

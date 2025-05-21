@@ -56,7 +56,10 @@ function Sidebar() {
           </Box>
         ) : (
           <PerfectScrollbar
-            style={{ height: "calc(100vh - 88px)", ...drawerSX }}
+            style={{
+              height: "calc(100vh - 88px)",
+              ...drawerSX,
+            }}
           >
             <MenuList />
           </PerfectScrollbar>
