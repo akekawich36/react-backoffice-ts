@@ -74,7 +74,7 @@ function Sidebar() {
       component="nav"
       sx={{ flexShrink: { md: 0 }, width: { xs: "auto", md: 260 } }}
     >
-      {downMD || (undefined && drawerOpen) ? (
+      {downMD || (false && drawerOpen) ? (
         <>
           <Drawer
             variant={downMD ? "temporary" : "persistent"}

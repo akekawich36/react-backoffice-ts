@@ -16,7 +16,7 @@ import Box from "@mui/material/Box";
 
 // project imports
 import NavItem from "../NavItem";
-import Transitions from "@/components/Transitions";
+import Transitions from "@/components/@extended/Transitions";
 
 // redux
 import { useSelector } from "react-redux";

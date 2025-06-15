@@ -48,8 +48,6 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(function MainCard(
   },
   ref
 ) {
-  const defaultShadow = "0 2px 14px 0 rgb(32 40 45 / 8%)";
-
   return (
     <Card
       ref={ref}
@@ -58,9 +56,6 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(function MainCard(
         borderRadius: "12px",
         border: border ? "1px solid" : "none",
         borderColor: "divider",
-        // ":hover": {
-        //   boxShadow: boxShadow ? shadow || defaultShadow : "inherit",
-        // },
         ...sx,
       }}
     >
